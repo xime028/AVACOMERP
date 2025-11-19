@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: avacom-erp
+
+  security:
+    user:
+      name: admin          # usuario de dev
+      password: admin123   # contraseña de dev
+      roles: ADMIN
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/avacom_erp
+    username: postgres
+    password: "12345."
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+server:
+  port: 8081
+
+app:
+  storage:
+    base-path: uploads
+    default-bucket: local
