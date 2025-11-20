@@ -52,6 +52,7 @@ public class AlmacenPageController {
         model.addAttribute("categorias", categorias);
         model.addAttribute("modoEdicion", false);
         model.addAttribute("query", q);
+        model.addAttribute("activeMenu", "almacen");
 
         return "almacen/productos/listaProductos";
     }

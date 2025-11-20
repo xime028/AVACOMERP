@@ -3,20 +3,55 @@
 <body>
 
 <!-- HEADER reutilizable -->
-<div th:fragment="appHeader">
+<div th:fragment="appHeader(activeMenu)">
     <div class="topbar">
         <div class="topbar-left">
             <div class="logo">
                 <img th:src="@{/img/avacom_erp_logo.svg}" alt="AVACOM ERP">
             </div>
+
             <nav class="menu">
-                <a href="#">Clientes</a>
-                <a href="#">Analítica</a>
-                <a href="#" class="active">Almacén</a>
-                <a href="#">Remisiones</a>
-                <a href="#">Capacitación</a>
-                <a href="#">Servicio técnico</a>
-                <a href="#">Configuración</a>
+                <a th:href="@{/clientes}"
+                   class="menu-link"
+                   th:classappend="${activeMenu} == 'clientes' ? ' menu-link--active' : ''">
+                    Clientes
+                </a>
+
+                <a th:href="@{/analitica}"
+                   class="menu-link"
+                   th:classappend="${activeMenu} == 'analitica' ? ' menu-link--active' : ''">
+                    Analítica
+                </a>
+
+                <a th:href="@{/almacen/productos}"
+                   class="menu-link"
+                   th:classappend="${activeMenu} == 'almacen' ? ' menu-link--active' : ''">
+                    Almacén
+                </a>
+
+                <a th:href="@{/remisiones}"
+                   class="menu-link"
+                   th:classappend="${activeMenu} == 'remisiones' ? ' menu-link--active' : ''">
+                    Remisiones
+                </a>
+
+                <a th:href="@{/capacitacion}"
+                   class="menu-link"
+                   th:classappend="${activeMenu} == 'capacitacion' ? ' menu-link--active' : ''">
+                    Capacitación
+                </a>
+
+                <a th:href="@{/servicio-tecnico}"
+                   class="menu-link"
+                   th:classappend="${activeMenu} == 'servicio' ? ' menu-link--active' : ''">
+                    Servicio técnico
+                </a>
+
+                <a th:href="@{/configuracion}"
+                   class="menu-link"
+                   th:classappend="${activeMenu} == 'configuracion' ? ' menu-link--active' : ''">
+                    Configuración
+                </a>
             </nav>
         </div>
         <div class="topbar-right">
