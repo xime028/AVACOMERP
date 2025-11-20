@@ -12,6 +12,7 @@ import java.time.OffsetDateTime;
 public class MovimientoSerialDto {
 
     private Long id;
+
     private Long idSerial;
     private String numeroSerial;
 

@@ -11,7 +11,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/avacom_erp
     username: postgres
-    password: "12345."
+    password: '12345.'
     driver-class-name: org.postgresql.Driver
 
   jpa:

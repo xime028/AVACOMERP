@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Almacén - Productos</title>
+
+    <!-- Estilos globales -->
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<div class="app-wrapper">
+
+<!-- HEADER reutilizable -->
+<div th:replace="~{fragments/layout :: appHeader}"></div>
+
+<div class="page-container">
+    <div class="page-title">ALMACÉN</div>
+
+    <div th:if="${mensajeExito}" class="alert-success" th:text="${mensajeExito}"></div>
+    <div th:if="${mensajeError}" class="alert-error" th:text="${mensajeError}"></div>
+
+    <div class="toolbar">
+        <button class="btn-primary" type="button" onclick="openCrearProductoModal()">
+            Crear Nuevo Producto
+            <span class="btn-primary-icon">+</span>
+        </button>
+
+        <form th:action="@{/almacen/productos}" method="get" class="search-box">
+            <input type="text" name="q" placeholder="Buscar Producto por nombre" th:value="${query}">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Referencia</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Estado</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(productos)}">
+                <td colspan="7">No hay productos registrados.</td>
+            </tr>
+            <tr th:each="p : ${productos}">
+                <td th:text="${p.referencia}">AVT014</td>
+                <td th:text="${p.nombre}">Tablet estudiante</td>
+                <td th:text="${p.descripcion}">Tablet 10"</td>
+                <td th:text="${p.nombreCategoria}">Tablets</td>
+                <td class="status-activo">Activo</td>
+                <td th:text="${p.stock}">120</td>
+                <td>
+                    <div class="acciones-wrapper">
+                        <button type="button"
+                                class="btn-acciones"
+                                th:attr="data-id=${p.id}"
+                                onclick="toggleAccionesMenu(this)">
+                            Movimiento...
+                        </button>
+
+                        <div class="acciones-menu"
+                             th:id="'acciones-menu-' + ${p.id}">
+                            <a class="acciones-item"
+                               th:href="@{'/almacen/productos/' + ${p.id} + '/editar'}">
+                                Editar
+                            </a>
+                            <form th:action="@{'/almacen/productos/' + ${p.id} + '/eliminar'}"
+                                  method="post"
+                                  onsubmit="return confirm('¿Deseas eliminar este producto?');">
+                                <button type="submit"
+                                        class="acciones-item acciones-item-danger">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL CREAR / EDITAR PRODUCTO -->
+<div id="modal-crear-producto"
+     class="modal-overlay"
+     th:classappend="${modoEdicion} ? ' show' : ''">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-title"
+                 th:text="${modoEdicion} ? 'Editar Producto' : 'Crear Nuevo Producto'">
+                Crear Nuevo Producto
+            </div>
+            <button type="button" class="modal-close" onclick="closeCrearProductoModal()">×</button>
+        </div>
+
+        <form th:action="${modoEdicion} ? @{/almacen/productos/{id}/editar(id=${producto.id})} : @{/almacen/productos}"
+              th:object="${producto}"
+              method="post">
+
+            <input type="hidden" th:field="*{id}"/>
+
+            <div class="modal-form-row modal-id-row">
+                <label class="modal-id-label">ID Producto</label>
+                <span class="modal-id-value"
+                      th:text="${producto.id} != null ? producto.id : 'Auto'">
+                    Auto
+                </span>
+            </div>
+
+            <div class="modal-form-row">
+                <div class="modal-form-group">
+                    <label for="referencia">Referencia *</label>
+                    <input id="referencia" type="text" th:field="*{referencia}"/>
+                </div>
+            </div>
+
+            <div class="modal-form-row">
+                <div class="modal-form-group">
+                    <label for="nombre">Nombre *</label>
+                    <input id="nombre" type="text" th:field="*{nombre}"/>
+                </div>
+            </div>
+
+            <div class="modal-form-row">
+                <div class="modal-form-group">
+                    <label for="idCategoria">Categoría *</label>
+                    <select id="idCategoria" th:field="*{idCategoria}">
+                        <option value="" disabled
+                                th:selected="${producto.idCategoria == null}">
+                            -- Seleccione --
+                        </option>
+                        <option th:each="c : ${categorias}"
+                                th:value="${c.id}"
+                                th:text="${c.nombre}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-form-row">
+                <div class="modal-form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" th:field="*{descripcion}"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="modal-btn-primary"
+                        th:text="${modoEdicion} ? 'Guardar Cambios' : 'Crear Producto'">
+                    Crear Producto
+                </button>
+                <button type="button" class="modal-btn-cancel" onclick="closeCrearProductoModal()">
+                    Cancelar Acción
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- FOOTER reutilizable -->
+<div th:replace="~{fragments/layout :: appFooter}"></div>
+</div>
+<script>
+    function openCrearProductoModal() {
+        const modal = document.getElementById('modal-crear-producto');
+        if (modal) {
+            modal.classList.add('show');
+        }
+    }
+
+    function closeCrearProductoModal() {
+        const modal = document.getElementById('modal-crear-producto');
+        if (modal) {
+            modal.classList.remove('show');
+        }
+    }
+
+    function toggleAccionesMenu(button) {
+        const id = button.getAttribute('data-id');
+        const menuId = 'acciones-menu-' + id;
+        const menu = document.getElementById(menuId);
+
+        document.querySelectorAll('.acciones-menu.show').forEach(function (m) {
+            if (m.id !== menuId) {
+                m.classList.remove('show');
+            }
+        });
+
+        if (menu) {
+            menu.classList.toggle('show');
+        }
+    }
+
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('.acciones-wrapper')) {
+            document.querySelectorAll('.acciones-menu.show').forEach(function (m) {
+                m.classList.remove('show');
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

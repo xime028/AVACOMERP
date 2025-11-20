@@ -81,4 +81,30 @@ public class MovimientoSerialServiceImpl implements MovimientoSerialService {
                 .map(movimientoSerialMapper::toDto)
                 .toList();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<MovimientoSerialDto> listarPorSerial(Long idSerial) {
+        SerialEntity serial = serialRepository.findById(idSerial)
+                .orElseThrow(() -> new IllegalArgumentException("Serial no encontrado"));
+
+        return movimientoSerialRepository.findBySerialOrderByFechaAsc(serial)
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    private MovimientoSerialDto toDto(MovimientoSerialEntity e) {
+        return MovimientoSerialDto.builder()
+                .id(e.getId())
+                .idSerial(e.getSerial().getId())
+                .numeroSerial(e.getSerial().getNumeroSerial())
+                .tipo(e.getTipo())
+                .modulo(e.getModulo())
+                .idReferencia(e.getIdReferencia())
+                .fecha(e.getFecha())
+                .idUsuario(e.getUsuario() != null ? e.getUsuario().getId() : null)
+                .nombreUsuario(e.getUsuario() != null ? e.getUsuario().getNombre() : null)
+                .build();
+    }
 }

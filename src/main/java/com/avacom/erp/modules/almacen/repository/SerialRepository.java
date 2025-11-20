@@ -14,4 +14,9 @@ public interface SerialRepository extends JpaRepository<SerialEntity, Long> {
     Optional<SerialEntity> findByNumeroSerial(String numeroSerial);
 
     List<SerialEntity> findByProducto(ProductoEntity producto);
+
+    List<SerialEntity> findByProductoAndEstadoIgnoreCase(ProductoEntity producto, String estado);
+
+    // NUEVO para validar unicidad del número de serial
+    boolean existsByNumeroSerialIgnoreCase(String numeroSerial);
 }

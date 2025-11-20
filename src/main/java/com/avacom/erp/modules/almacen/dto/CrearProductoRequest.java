@@ -1,5 +1,6 @@
 package com.avacom.erp.modules.almacen.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -12,22 +13,16 @@ import lombok.*;
 @Builder
 public class CrearProductoRequest {
 
-    @NotBlank
-    @Size(max = 50)
+    private Long id;
+
+    @NotBlank(message = "La referencia es obligatoria")
     private String referencia;
 
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "El nombre es obligatorio")
     private String nombre;
 
-    @Size(max = 512)
-    private String descripcion;
-
-    @NotNull
+    @NotNull(message = "La categoría es obligatoria")
     private Long idCategoria;
 
-    @NotNull
-    private Integer stock;
-
-    private Integer stockReservado;
+    private String descripcion;
 }

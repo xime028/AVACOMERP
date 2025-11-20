@@ -22,4 +22,6 @@ public interface MovimientoSerialService {
      * Listar historial filtrado.
      */
     List<MovimientoSerialDto> buscar(MovimientoSerialFiltroRequest filtro);
+
+    List<MovimientoSerialDto> listarPorSerial(Long idSerial);
 }

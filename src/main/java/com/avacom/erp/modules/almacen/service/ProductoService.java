@@ -6,15 +6,24 @@ import java.util.List;
 
 public interface ProductoService {
 
-    ProductoDto crear(CrearProductoRequest request);
-
-    ProductoDto actualizar(Long id, ActualizarProductoRequest request);
-
-    ProductoDetalleDto obtenerDetalle(Long id);
-
+    // Usado por tu API REST
     List<ProductoDto> listarTodos();
 
     List<ProductoDto> buscarPorFiltro(ProductoFiltroRequest filtro);
+
+    // Usado por la vista / búsquedas
+    List<ProductoDto> buscarPorTexto(String texto);
+
+    ProductoDto crear(CrearProductoRequest request);
+
+    // Para obtener datos básicos (lista, edición, etc.)
+    ProductoDto obtenerPorId(Long id);
+
+    // Para el detalle REST (ProductoController)
+    ProductoDetalleDto obtenerDetalle(Long id);
+
+    // Actualizar (REST y vista)
+    ProductoDto actualizar(Long id, ActualizarProductoRequest request);
 
     void eliminar(Long id);
 }

@@ -33,4 +33,9 @@ public class SerialController {
         serialService.cambiarEstado(idSerial, nuevoEstado);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/producto/{idProducto}/disponibles")
+    public ResponseEntity<List<SerialDto>> listarDisponiblesPorProducto(@PathVariable Long idProducto) {
+        return ResponseEntity.ok(serialService.listarDisponiblesPorProducto(idProducto));
+    }
 }

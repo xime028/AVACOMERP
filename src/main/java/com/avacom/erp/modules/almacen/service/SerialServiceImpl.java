@@ -117,11 +117,9 @@ public class SerialServiceImpl implements SerialService {
         SerialEntity existente = serialRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Serial no encontrado"));
 
-        if (nuevoEstado == null || nuevoEstado.isBlank()) {
-            throw new IllegalArgumentException("El nuevo estado no puede ser vacío");
-        }
+        validator.validarCambioEstado(nuevoEstado);
 
-        existente.setEstado(nuevoEstado);
+        existente.setEstado(nuevoEstado.toUpperCase());
         SerialEntity guardado = serialRepository.save(existente);
 
         return serialMapper.toDto(guardado);
@@ -133,5 +131,17 @@ public class SerialServiceImpl implements SerialService {
             throw new IllegalArgumentException("Serial no encontrado");
         }
         serialRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SerialDto> listarDisponiblesPorProducto(Long idProducto) {
+        ProductoEntity producto = productoRepository.findById(idProducto)
+                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+
+        return serialRepository.findByProductoAndEstadoIgnoreCase(producto, "DISPONIBLE")
+                .stream()
+                .map(serialMapper::toDto)
+                .toList();
     }
 }

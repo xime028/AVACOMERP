@@ -20,4 +20,9 @@ public class MovimientoSerialController {
     public ResponseEntity<List<MovimientoSerialDto>> buscar(@RequestBody MovimientoSerialFiltroRequest filtro) {
         return ResponseEntity.ok(movimientoSerialService.buscar(filtro));
     }
+
+    @GetMapping("/serial/{idSerial}")
+    public ResponseEntity<List<MovimientoSerialDto>> listarPorSerial(@PathVariable Long idSerial) {
+        return ResponseEntity.ok(movimientoSerialService.listarPorSerial(idSerial));
+    }
 }

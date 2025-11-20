@@ -15,4 +15,6 @@ public interface MovimientoSerialRepository extends JpaRepository<MovimientoSeri
     List<MovimientoSerialEntity> findByUsuario(UsuarioEntity usuario);
 
     List<MovimientoSerialEntity> findByFechaBetween(OffsetDateTime desde, OffsetDateTime hasta);
+
+    List<MovimientoSerialEntity> findBySerialOrderByFechaAsc(SerialEntity serial);
 }

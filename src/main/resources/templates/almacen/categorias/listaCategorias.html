@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Categorías - Almacén</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f9ff;
+        }
+
+        .topbar {
+            background-color: #0096d6;
+            color: white;
+            padding: 10px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .menu {
+            display: flex;
+            gap: 15px;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .menu a.active {
+            text-decoration: underline;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .page-container {
+            padding: 20px 40px 40px 40px;
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background-color: #0096d6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-primary-icon {
+            margin-left: 8px;
+            font-weight: bold;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .search-box input {
+            padding: 6px 10px;
+            border-radius: 15px;
+            border: 1px solid #0096d6;
+            min-width: 220px;
+        }
+
+        .search-box button {
+            background-color: #0096d6;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .table-container {
+            margin-top: 10px;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #e5f5ff;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background-color: #0096d6;
+            color: white;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #d3efff;
+        }
+
+        tbody tr:nth-child(odd) {
+            background-color: #e5f5ff;
+        }
+
+        .acciones-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .acciones-icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .status-activo {
+            color: #006400;
+            font-weight: 600;
+        }
+
+        .footer-bar {
+            background-color: #0096d6;
+            height: 16px;
+            margin-top: 20px;
+        }
+
+        /* ===== Modal Crear Categoría ===== */
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.3);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px 30px 25px 30px;
+            min-width: 380px;
+            max-width: 520px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .modal-form-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .modal-form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-form-group label {
+            font-size: 13px;
+            margin-bottom: 3px;
+            font-weight: 600;
+        }
+
+        .modal-form-group input[type="text"],
+        .modal-form-group textarea {
+            padding: 6px 8px;
+            border-radius: 4px;
+            border: 1px solid #c0c0c0;
+            font-size: 13px;
+        }
+
+        .modal-form-group textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+
+        .modal-actions {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-btn-primary {
+            width: 100%;
+            background-color: #0096d6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .modal-btn-cancel {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .alert-error {
+            background-color: #ffe5e5;
+            color: #a30000;
+            border: 1px solid #ffb3b3;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .alert-success {
+            background-color: #e3f8e3;
+            color: #136c13;
+            border: 1px solid #9ede9e;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        /* ID categoría en la misma fila */
+        .modal-id-row {
+            align-items: center;
+        }
+
+        .modal-id-label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .modal-id-value {
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="topbar-left">
+        <div class="logo">AVACOM ERP</div>
+        <nav class="menu">
+            <a href="#">Clientes</a>
+            <a href="#">Analítica</a>
+            <a href="#" class="active">Almacén</a>
+            <a href="#">Remisiones</a>
+            <a href="#">Capacitación</a>
+            <a href="#">Servicio técnico</a>
+            <a href="#">Configuración</a>
+        </nav>
+    </div>
+    <div class="topbar-right">
+        <span>Usuarios</span>
+    </div>
+</div>
+
+<div class="page-container">
+    <div class="page-title">CATEGORÍAS</div>
+
+    <div th:if="${mensajeExito}" class="alert-success" th:text="${mensajeExito}"></div>
+    <div th:if="${mensajeError}" class="alert-error" th:text="${mensajeError}"></div>
+
+    <div class="toolbar">
+        <button class="btn-primary" type="button" onclick="openCrearCategoriaModal()">
+            Crear Nueva Categoría
+            <span class="btn-primary-icon">+</span>
+        </button>
+
+        <form th:action="@{/almacen/categorias}" method="get" class="search-box">
+            <input type="text" name="q" placeholder="Buscar Categoría" th:value="${query}">
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(categorias)}">
+                <td colspan="5">No hay categorías registradas.</td>
+            </tr>
+            <tr th:each="c : ${categorias}">
+                <!-- Mostramos el ID tal cual, si luego quieres formato 00001 lo ajustamos -->
+                <td th:text="${c.id}">00001</td>
+                <td th:text="${c.nombre}">Tablets</td>
+                <td th:text="${c.descripcion}">Pantallas 86"</td>
+                <!-- Por ahora estado fijo "Activo" (no está en la tabla de BD) -->
+                <td class="status-activo">Activo</td>
+                <td>
+                    <div class="acciones-icons">
+                        <button type="button" class="acciones-icon-btn" title="Editar">
+                            ✏️
+                        </button>
+                        <button type="button" class="acciones-icon-btn" title="Eliminar">
+                            🗑️
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ===== Modal Crear Categoría ===== -->
+<div id="modal-crear-categoria" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <div class="modal-title">Crear Nueva Categoría</div>
+            <button type="button" class="modal-close" onclick="closeCrearCategoriaModal()">×</button>
+        </div>
+
+        <form th:action="@{/almacen/categorias}" th:object="${categoria}" method="post">
+
+            <div class="modal-form-row modal-id-row">
+                <label class="modal-id-label">ID Categoría</label>
+                <span class="modal-id-value">Auto</span>
+            </div>
+
+            <div class="modal-form-row">
+                <div class="modal-form-group">
+                    <label for="nombre">Nombre *</label>
+                    <input id="nombre" type="text" th:field="*{nombre}"/>
+                </div>
+            </div>
+
+            <div class="modal-form-row">
+                <div class="modal-form-group">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" th:field="*{descripcion}"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="submit" class="modal-btn-primary">Crear Categoría</button>
+                <button type="button" class="modal-btn-cancel" onclick="closeCrearCategoriaModal()">
+                    Cancelar Acción
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="footer-bar"></div>
+
+<script>
+    function openCrearCategoriaModal() {
+        document.getElementById('modal-crear-categoria').classList.add('show');
+    }
+
+    function closeCrearCategoriaModal() {
+        document.getElementById('modal-crear-categoria').classList.remove('show');
+    }
+</script>
+
+</body>
+</html>

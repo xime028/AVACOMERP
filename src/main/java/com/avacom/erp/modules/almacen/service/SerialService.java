@@ -26,4 +26,6 @@ public interface SerialService {
     void eliminar(Long id);
 
     SerialDto cambiarEstado(@PathVariable Long idSerial, @RequestParam("estado") String nuevoEstado);
+
+    List<SerialDto> listarDisponiblesPorProducto(Long idProducto);
 }
