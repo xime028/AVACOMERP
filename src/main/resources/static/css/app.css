@@ -183,7 +183,7 @@ table {
 
 .search-box input {
     padding: 6px 10px;
-    border-radius: 15px;
+    border-radius: 6px;
     border: 1px solid #15A3DD;  /* borde a juego */
     min-width: 260px;
     background-color: #ffffff;
@@ -200,7 +200,6 @@ table {
 
 /* Encabezado igual que el Figma */
 thead {
-    background-color: rgba(21, 163, 221, 0.22);
     color: #000000;
 }
 
