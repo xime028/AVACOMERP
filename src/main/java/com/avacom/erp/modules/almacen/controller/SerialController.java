@@ -22,11 +22,6 @@ public class SerialController {
         return ResponseEntity.ok(serialService.crear(request));
     }
 
-    @GetMapping("/producto/{idProducto}")
-    public ResponseEntity<List<SerialDto>> listarPorProducto(@PathVariable Long idProducto) {
-        return ResponseEntity.ok(serialService.listarPorProducto(idProducto));
-    }
-
     @PatchMapping("/{idSerial}/estado")
     public ResponseEntity<Void> cambiarEstado(@PathVariable Long idSerial,
                                               @RequestParam("estado") String nuevoEstado) {
@@ -37,5 +32,10 @@ public class SerialController {
     @GetMapping("/producto/{idProducto}/disponibles")
     public ResponseEntity<List<SerialDto>> listarDisponiblesPorProducto(@PathVariable Long idProducto) {
         return ResponseEntity.ok(serialService.listarDisponiblesPorProducto(idProducto));
+    }
+
+    @GetMapping("/producto/{idProducto}")
+    public ResponseEntity<List<SerialDto>> listarSerialesPorProducto(@PathVariable Long idProducto) {
+        return ResponseEntity.ok(serialService.obtenerPorProducto(idProducto));
     }
 }

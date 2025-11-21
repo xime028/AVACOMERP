@@ -12,4 +12,6 @@ public class ProductoFiltroRequest {
     private String nombre;
     private String referencia;
     private Long idCategoria;
+
+
 }

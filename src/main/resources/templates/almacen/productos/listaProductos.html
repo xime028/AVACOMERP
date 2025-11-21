@@ -72,6 +72,12 @@
                                th:href="@{'/almacen/productos/' + ${p.id} + '/editar'}">
                                 Editar
                             </a>
+
+                            <a class="acciones-item"
+                               th:href="@{'/almacen/productos/' + ${p.id} + '/seriales'}">
+                                Ver seriales
+                            </a>
+
                             <form th:action="@{'/almacen/productos/' + ${p.id} + '/eliminar'}"
                                   method="post"
                                   onsubmit="return confirm('¿Deseas eliminar este producto?');">
@@ -206,6 +212,34 @@
             });
         }
     });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const input = document.querySelector("input[name='q']");
+
+        input.addEventListener("input", function (e) {
+            const valor = e.target.value.trim();
+
+            if (valor === "") {
+                // Redirige al listado completo automáticamente
+                window.location.href = "/almacen/productos";
+            }
+        });
+    });
+
+    function verSeriales(idProducto) {
+        fetch(`/api/almacen/seriales/producto/${idProducto}`)
+            .then(res => res.json())
+            .then(seriales => {
+                // Aquí podrías mostrar los seriales en un modal o navegar a otra página
+                console.log(seriales);
+                mostrarModalSeriales(seriales);
+            });
+    }
+
+    function mostrarModalSeriales(seriales) {
+    // Lógica para llenar una tabla/modal como en el diseño
+    // Aquí
+    }
 </script>
 
 </body>

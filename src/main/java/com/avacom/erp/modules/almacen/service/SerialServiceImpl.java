@@ -144,4 +144,12 @@ public class SerialServiceImpl implements SerialService {
                 .map(serialMapper::toDto)
                 .toList();
     }
+
+    @Override
+    public List<SerialDto> obtenerPorProducto(Long idProducto) {
+        List<SerialEntity> seriales = serialRepository.findByProducto_Id(idProducto);
+        return seriales.stream()
+                .map(serialMapper::toDto)
+                .toList();
+    }
 }

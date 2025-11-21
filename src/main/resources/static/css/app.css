@@ -101,7 +101,7 @@ body {
 
 .search-box input {
     padding: 6px 10px;
-    border-radius: 15px;
+    border-radius: 6px;
     border: 1px solid #15A3DD;
     min-width: 220px;
 }
@@ -109,10 +109,10 @@ body {
 .search-box button {
     background-color: #15A3DD;
     color: white;
-    border: none;
     padding: 6px 12px;
-    border-radius: 15px;
+    border-radius: 6px;
     cursor: pointer;
+    border: 1px solid #ffffff;
 }
 
 /* ===== MENSAJES ===== */
@@ -174,29 +174,8 @@ table {
     cursor: pointer;
     font-weight: 500;
 }
-/* caja de búsqueda alineada a la derecha */
-.search-box {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
 
-.search-box input {
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid #15A3DD;  /* borde a juego */
-    min-width: 260px;
-    background-color: #ffffff;
-}
 
-.search-box button {
-    background-color: #15A3DD;  /* botón de buscar a juego */
-    color: white;
-    border: 1px solid #ffffff;
-    padding: 6px 16px;
-    border-radius: 15px;
-    cursor: pointer;
-}
 
 /* Encabezado igual que el Figma */
 thead {

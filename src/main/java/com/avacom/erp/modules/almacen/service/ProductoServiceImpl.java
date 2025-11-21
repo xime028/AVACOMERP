@@ -45,10 +45,25 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<ProductoDto> buscarPorFiltro(ProductoFiltroRequest filtro) {
-        // Por ahora usamos una implementación simple para no depender
-        // de los campos internos de ProductoFiltroRequest.
-        // Más adelante, si quieres, hacemos filtros por categoría, referencia, etc.
-        return listarTodos();
+
+        // Si no se pasó ningún filtro, devolver todo
+        if ((filtro.getReferencia() == null || filtro.getReferencia().isBlank()) &&
+                (filtro.getNombre() == null || filtro.getNombre().isBlank()) &&
+                filtro.getIdCategoria() == null) {
+            return listarTodos();
+        }
+
+        String ref = filtro.getReferencia() != null ? filtro.getReferencia() : "";
+        String nombre = filtro.getNombre() != null ? filtro.getNombre() : "";
+        Long idCategoria = filtro.getIdCategoria();
+
+        List<ProductoEntity> entities = productoRepository
+                .findByReferenciaContainingIgnoreCaseOrNombreContainingIgnoreCaseOrCategoria_Id(ref, nombre, idCategoria);
+
+        return entities.stream()
+                .map(productoMapper::toDto)
+                .toList();
+
     }
 
     @Override

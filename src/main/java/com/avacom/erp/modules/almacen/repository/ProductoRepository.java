@@ -17,11 +17,8 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> 
 
     List<ProductoEntity> findByCategoria(CategoriaEntity categoria);
 
-    // Buscar por referencia o nombre
-    List<ProductoEntity> findByNombreContainingIgnoreCaseOrReferenciaContainingIgnoreCase(
-            String nombre,
-            String referencia
-    );
+    // Buscar por nombre, referencia o categoria
+    List<ProductoEntity> findByReferenciaContainingIgnoreCaseOrNombreContainingIgnoreCaseOrCategoria_Id(String referencia, String nombre, Long idCategoria);
 
     // Búsqueda por referencia o nombre (ignorando mayúsculas/minúsculas)
     List<ProductoEntity> findByReferenciaContainingIgnoreCaseOrNombreContainingIgnoreCase(

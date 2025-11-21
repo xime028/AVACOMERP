@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Seriales del producto</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+
+<div class="app-wrapper">
+    <div th:replace="fragments/layout :: appHeader('almacen')"></div>
+
+    <div class="page-container">
+        <div class="page-title">SERIALES DEL PRODUCTO</div>
+
+        <div class="producto-info">
+            <p><strong>Referencia:</strong> <span th:text="${producto.referencia}">REF123</span></p>
+            <p><strong>Nombre:</strong> <span th:text="${producto.nombre}">Producto X</span></p>
+            <p><strong>Descripción:</strong> <span th:text="${producto.descripcion}">Pantalla LED</span></p>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Número de Serial</th>
+                    <th>Estado</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(seriales)}">
+                    <td colspan="3">No hay seriales registrados para este producto.</td>
+                </tr>
+                <tr th:each="s : ${seriales}">
+                    <td th:text="${s.id}">1</td>
+                    <td th:text="${s.numeroSerial}">JYD0000000123</td>
+                    <td th:text="${s.estado}">En almacén</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <a th:href="@{/almacen/productos}" class="btn-secondary">← Volver a productos</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

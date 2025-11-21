@@ -19,4 +19,6 @@ public interface SerialRepository extends JpaRepository<SerialEntity, Long> {
 
     // NUEVO para validar unicidad del número de serial
     boolean existsByNumeroSerialIgnoreCase(String numeroSerial);
+
+    List<SerialEntity> findByProducto_Id(Long idProducto);
 }
